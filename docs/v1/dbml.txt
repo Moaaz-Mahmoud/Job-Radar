@@ -1,0 +1,116 @@
+enum application_status {
+  submitted
+  canceled
+  received
+  advanced
+  rejected
+}
+
+enum user_role {
+  regular
+  recruiter
+}
+
+enum site_type {
+  on_site
+  hybrid
+  remote
+}
+
+enum employment_type {
+  full_time
+  part_time
+  contract
+  internship
+}
+
+
+Table users {
+  id uuid [primary key]
+  fname text [not null]
+  lname text
+  username text [not null, unique]
+  email text [not null, unique]
+  hashed_password text [not null]
+  role user_role [not null, default: 'regular']
+  is_active bool [default: true]
+  email_verified_at datetime [null]
+  created_at datetime [default: now()]
+  updated_at datetime [default: now()]
+}
+
+Table refresh_tokens {
+  id uuid [pk]
+  user_id uuid [not null, ref: > users.id]
+  token_hash text [not null, unique]
+  expires_at datetime [not null]
+  revoked_at datetime
+  created_at datetime [default: now()]
+  indexes {
+    (user_id)
+    (user_id, revoked_at) // helps revoke all active tokens quickly
+  }
+}
+
+Table companies {
+  id uuid [primary key]
+  name text [not null, unique]
+  website text
+  description text
+  created_at datetime [default: now()]
+  updated_at datetime [default: now()]
+}
+
+// Many-to-many between users and companies
+Table users_companies {
+  user_id uuid [not null, ref: > users.id]
+  company_id uuid [not null, ref: > companies.id]
+  created_at datetime [default: now()]
+  // Composite primary key
+  indexes {
+    (user_id, company_id) [pk]
+  }
+}
+
+Table jobs {
+  id uuid [pk]
+  title text [not null]
+  description text
+  is_archived bool [not null, default: false]
+  vacancies int [not null, default: 1] // >= 0
+  location text
+  employment_type employment_type
+  site site_type
+  salary_min int
+  salary_max int
+  salary_currency varchar(3) [not null, default: 'EGP']
+  company_id uuid [not null]
+  tags text[]
+  created_at datetime [default: now()]
+  updated_at datetime [default: now()]
+  indexes {
+    title
+    (company_id, is_archived)
+    (location, employment_type, site)
+  }
+}
+
+Table applications {
+  id uuid [primary key]
+  user_id uuid [not null]
+  job_id uuid [not null]
+  cv_url text [not null]
+  cover_letter text
+  status application_status [not null, default: 'submitted']
+  created_at datetime [default: now()]
+  updated_at datetime [default: now()]
+  indexes {
+    (user_id, job_id) [unique]
+    (job_id, status)
+  }
+}
+
+
+Ref: applications.user_id > users.id
+Ref: applications.job_id > jobs.id
+Ref: jobs.company_id > companies.id
