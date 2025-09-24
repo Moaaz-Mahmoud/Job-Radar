@@ -1,5 +1,6 @@
 from fastapi import FastAPI, APIRouter
 from api.v1.routers import auth, users, jobs, applications, companies, admin
+from api.db import ping_db
 
 
 API_PREFIX = "/api/v1"
@@ -20,3 +21,9 @@ def create_app():
     return app
 
 app = create_app()
+
+
+@app.get("/healthz")
+async def healthz():
+    await ping_db()
+    return {"ok": True}
