@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlalchemy import String, DateTime, ForeignKey, UniqueConstraint, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
-from . import Base, application_status_enum, ApplicationStatus
+from .base import Base, application_status_enum, ApplicationStatus
 
 
 class Application(Base):

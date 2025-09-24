@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlalchemy import ForeignKey, DateTime, PrimaryKeyConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
-from . import Base
+from .base import Base
 
 
 class UserCompany(Base):

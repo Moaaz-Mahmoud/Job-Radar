@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlalchemy import String, Integer, Boolean, DateTime, ForeignKey, Index, CheckConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID, ARRAY
-from . import Base, employment_type_enum, site_type_enum
+from .base import Base, employment_type_enum, site_type_enum
 
 
 class Job(Base):
