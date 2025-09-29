@@ -1,6 +1,7 @@
 from fastapi import FastAPI, APIRouter
 from api.v1.routers import auth, users, jobs, applications, companies, admin
 from api.db import ping_db
+from api.db import init_models
 
 
 API_PREFIX = "/api/v1"
@@ -13,7 +14,7 @@ def create_app():
     v1_router.include_router(auth.router,         tags=["auth"])
     v1_router.include_router(users.router,        tags=["users"])
     v1_router.include_router(jobs.router,         tags=["jobs"])
-    v1_router.include_router(applications.router, prefix="/applications", tags=["applications"])
+    v1_router.include_router(applications.router, tags=["applications"])
     v1_router.include_router(companies.router,    tags=["companies"])
     v1_router.include_router(admin.router,        tags=["admin"])
 
@@ -27,3 +28,8 @@ app = create_app()
 async def healthz():
     await ping_db()
     return {"ok": True}
+
+
+@app.on_event("startup")
+async def _startup():
+    await init_models()

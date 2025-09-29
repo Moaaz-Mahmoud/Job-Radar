@@ -9,8 +9,17 @@ class SignupIn(BaseModel):
     lname: str | None = None
 
 
+class SignupOut(BaseModel):
+    message: str = "verification email sent"
+
+
 class VerifyEmailIn(BaseModel):
+    email: EmailStr
     token: str
+
+
+class VerifyEmailOut(BaseModel):
+    message: str = "email verified"
 
 
 class LoginEmailIn(BaseModel):
