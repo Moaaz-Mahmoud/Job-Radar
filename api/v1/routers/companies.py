@@ -1,4 +1,4 @@
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel, EmailStr
 
-router = APIRouter(prefix='/companies')
+router = APIRouter(prefix='/companies', tags=["companies"])

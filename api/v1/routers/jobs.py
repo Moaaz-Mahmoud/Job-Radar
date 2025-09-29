@@ -1,4 +1,4 @@
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel, EmailStr
 
-router = APIRouter(prefix="/jobs")
+router = APIRouter(prefix="/jobs", tags=["jobs"])

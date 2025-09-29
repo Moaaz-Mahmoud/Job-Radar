@@ -8,8 +8,6 @@ from api.v1.services.auth_service import AuthService, EmailOrUsernameTaken, Weak
 from api.v1.services.email_sender import (
     ConsoleEmailSender,
     BrevoEmailSender,
-    # ResendEmailSender,
-    # SMTPEmailSender,
 )
 
 

@@ -11,12 +11,12 @@ def create_app():
     app = FastAPI(title="JobRadar API", version="1.0.0")
     
     v1_router = APIRouter(prefix=API_PREFIX)
-    v1_router.include_router(auth.router,         tags=["auth"])
-    v1_router.include_router(users.router,        tags=["users"])
-    v1_router.include_router(jobs.router,         tags=["jobs"])
-    v1_router.include_router(applications.router, tags=["applications"])
-    v1_router.include_router(companies.router,    tags=["companies"])
-    v1_router.include_router(admin.router,        tags=["admin"])
+    v1_router.include_router(auth.router)
+    v1_router.include_router(users.router)
+    v1_router.include_router(jobs.router)
+    v1_router.include_router(applications.router)
+    v1_router.include_router(companies.router)
+    v1_router.include_router(admin.router)
 
     app.include_router(v1_router)
     return app
