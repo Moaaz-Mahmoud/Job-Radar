@@ -110,6 +110,18 @@ Table applications {
   }
 }
 
+Table email_verification_tokens {
+  id uuid [pk]
+  user_id uuid [not null, ref: > users.id]
+  token_hash text [not null, unique]
+  expires_at datetime [not null]
+  used_at datetime
+  created_at datetime [default: now()]
+  indexes {
+    (user_id)
+  }
+}
+
 
 Ref: applications.user_id > users.id
 Ref: applications.job_id > jobs.id
