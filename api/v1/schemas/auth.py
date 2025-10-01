@@ -42,3 +42,7 @@ class TokensOut(BaseModel):
 # For /auth/refresh
 class RefreshIn(BaseModel):
     refresh_token: str
+
+
+class LogoutIn(BaseModel):
+    refresh_token: str
