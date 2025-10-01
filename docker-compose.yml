@@ -1,3 +1,6 @@
+version: "3.9"
+
+
 services:
   db:
     image: postgres:16-alpine
@@ -15,5 +18,27 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jobradar_api
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      MAIL_PROVIDER: ${MAIL_PROVIDER}
+      BREVO_API_KEY: ${BREVO_API_KEY}
+      BREVO_FROM_EMAIL: ${BREVO_FROM_EMAIL}
+      BREVO_FROM_NAME: ${BREVO_FROM_NAME}
+      BREVO_BASE_URL: ${BREVO_BASE_URL}
+      VERIFY_URL_BASE: ${VERIFY_URL_BASE}
+    ports:
+      - "8000:8000"
+    # optional: restart policy for resiliency
+    restart: unless-stopped
+
 volumes:
   pgdata:
